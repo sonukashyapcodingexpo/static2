@@ -57,10 +57,15 @@ def icon(name):
 
 LINK_ARROW = '<svg class="link-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
 
-def card_block(title, text, icon_name, kicker="", more="", bullets=None, href=None):
+def card_block(title, text, icon_name, kicker="", more="", bullets=None, href=None, count=None):
     bits = [icon(icon_name)]
-    if kicker:
-        bits.append(f'<p class="card-kicker">{e(kicker)}</p>')
+    if count is not None or kicker:
+        num = ""
+        if count is not None:
+            shown = f"{int(count):02d}"
+            num = f'<span class="count" data-count="{int(count)}" data-pad="2">{shown}</span>'
+        sep = "  ·  " if num and kicker else ""
+        bits.append(f'<p class="card-kicker">{num}{sep}{e(kicker)}</p>')
     bits.append(f"<h3>{e(title)}</h3><p>{e(text)}</p>")
     if more:
         bits.append(f'<p class="card-more">{e(more)}</p>')
@@ -345,9 +350,11 @@ def drop(label, columns, end=False, on=False, extra=""):
     klass = "drop" + (" drop-end" if end else "") + (" is-on" if on else "")
     cols = []
     for kicker, links in columns:
-        cols.append(f'<p class="drop-kicker">{e(kicker)}</p>')
-        for text, desc, href in links:
-            cols.append(f'<a href="{e(href)}"><strong>{e(text)}</strong><span>{e(desc)}</span></a>')
+        items = "".join(
+            f'<a href="{e(href)}"><strong>{e(text)}</strong><span>{e(desc)}</span></a>'
+            for text, desc, href in links
+        )
+        cols.append(f'<div class="drop-col"><p class="drop-kicker">{e(kicker)}</p>{items}</div>')
     return f'<div class="{klass}"><button type="button" aria-expanded="false">{e(label)} <svg class="caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button><div class="drop-panel">{"".join(cols)}{extra}</div></div>'
 
 def nav(path, active):
@@ -382,16 +389,16 @@ def nav(path, active):
     ]
     work = [
         ("Work", [
-            ("Portfolio", "Selected products.", p + "portfolio/index.html"),
-            ("Case studies", "What changed after launch.", p + "case-studies/index.html"),
             ("Notes", "Writing from the studio.", p + "blog/index.html"),
             ("Client notes", "Words from teams we have built with.", p + "testimonials/index.html"),
         ]),
     ]
     home = f'<a href="{e(p + "index.html")}" class="{"is-on" if active == "home" else ""}">Home</a>'
+    portfolio = f'<a href="{e(p + "portfolio/index.html")}" class="{"is-on" if active == "portfolio" else ""}">Portfolio</a>'
+    cases = f'<a href="{e(p + "case-studies/index.html")}" class="{"is-on" if active == "cases" else ""}">Case studies</a>'
     contact = f'<a href="{e(p + "contact-us/index.html")}" class="{"is-on" if active == "contact" else ""}">Contact</a>'
     all_services = f'<a class="drop-all" href="{e(p + "services/index.html")}">All services</a>'
-    return home + drop("Services", services, on=active == "services", extra=all_services) + drop("Company", company, on=active == "company") + drop("Work", work, end=True, on=active == "work") + contact
+    return home + drop("Services", services, on=active == "services", extra=all_services) + drop("Company", company, on=active == "company") + drop("Work", work, end=True, on=active == "work") + portfolio + cases + contact
 
 def header(path, active):
     p = prefix(path)
@@ -430,14 +437,14 @@ def shell(path, title, desc, active, body):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{e(asset(path, "assets/css/site.css"))}">
+<link rel="stylesheet" href="{e(asset(path, "assets/css/site.css"))}?v=3">
 </head>
 <body class="has-film">
 <a class="skip" href="#main">Skip to content</a>
 {header(path, active)}
 <main id="main">{body}</main>
 {footer(path)}
-<script src="{e(asset(path, "assets/js/site.js"))}"></script>
+<script src="{e(asset(path, "assets/js/site.js"))}?v=4"></script>
 </body>
 </html>
 '''
@@ -508,10 +515,10 @@ def home():
     ]
     for i, (slug, ic) in enumerate(featured, 1):
         item = next(s for s in SERVICES if s["path"].startswith(slug + "/"))
-        rows += card_block(item["title"], item["lead"], ic, kicker=f"0{i}  ·  {item['kicker']}", more=item["challenge"], href=p + item["path"])
+        rows += card_block(item["title"], item["lead"], ic, kicker=item["kicker"], count=i, more=item["challenge"], href=p + item["path"])
     checks = "".join(f"<li>{CHECK}{e(t)}</li>" for t in ["Custom software and internal tools", "Web and mobile products", "A written plan before the build", "Support after the release"])
     steps = "".join(
-        f'<div class="step"><b>0{n}</b><div><h3>{e(h)}</h3><p>{e(t)}</p></div></div>'
+        f'<div class="step"><b class="count" data-count="{n}" data-pad="2">{n:02d}</b><div><h3>{e(h)}</h3><p>{e(t)}</p></div></div>'
         for n, h, t in [
             (1, "Discover", "We learn the job, the people, and the constraints before a stack is chosen."),
             (2, "Plan", "A sequence, a date, and the result you will be able to point at."),
@@ -520,7 +527,7 @@ def home():
         ]
     )
     reasons = "".join(
-        card_block(h, t, ic, kicker=f"0{n}", more=more, bullets=bullets)
+        card_block(h, t, ic, count=n, more=more, bullets=bullets)
         for n, ic, h, t, more, bullets in [
             (1, "layers", "Built for one operation", "The software follows the work you already do.",
              "We write the morning routine before a stack is chosen, so the system matches the desk it lands on.",
@@ -553,10 +560,10 @@ def home():
     body = f'''
 {opening}
 <section class="stat-strip"><div class="wrap stats">
-<div class="stat"><b>140</b><span>Products still in use</span></div>
-<div class="stat"><b>11</b><span>Years of the practice</span></div>
-<div class="stat"><b>64</b><span>Engineers and designers</span></div>
-<div class="stat"><b>4</b><span>Hour-bands we cover</span></div>
+<div class="stat"><b class="count" data-count="140">140</b><span>Products still in use</span></div>
+<div class="stat"><b class="count" data-count="11">11</b><span>Years of the practice</span></div>
+<div class="stat"><b class="count" data-count="64">64</b><span>Engineers and designers</span></div>
+<div class="stat"><b class="count" data-count="4">4</b><span>Hour-bands we cover</span></div>
 </div></section>
 <div class="marquee" aria-hidden="true"><div class="marquee-track"><span>Healthcare</span><i>·</i><span>Logistics</span><i>·</i><span>Education</span><i>·</i><span>Hospitality</span><i>·</i><span>Retail</span><i>·</i><span>Property</span><i>·</i><span>Finance</span><i>·</i><span>Startups</span><i>·</i><span>Healthcare</span><i>·</i><span>Logistics</span><i>·</i><span>Education</span><i>·</i><span>Hospitality</span><i>·</i><span>Retail</span><i>·</i><span>Property</span><i>·</i><span>Finance</span><i>·</i><span>Startups</span><i>·</i></div></div>
 <section class="section"><div class="wrap split">
@@ -689,7 +696,7 @@ def portfolio():
     opening = film(path, "Selected work", "Systems that stayed in use.", "A sample of products. Names of private clients are changed. The jobs are not.", "", "desk", "build", crumbs(path, [("Portfolio", "")]))
     body = f'''{opening}
 <section class="section" style="padding-top:0"><div class="wrap portfolio">{cards}</div></section>{cta(path)}'''
-    return shell(path, "Portfolio | SapporoSys", "Selected software products designed and supported by SapporoSys.", "work", body)
+    return shell(path, "Portfolio | SapporoSys", "Selected software products designed and supported by SapporoSys.", "portfolio", body)
 
 def cases():
     path = "case-studies/index.html"
@@ -702,7 +709,7 @@ def cases():
     opening = film(path, "After launch", "What changed once staff used it.", "We write these after the support window, when the polite version of the demo has worn off.", "", "meet", None, crumbs(path, [("Case studies", "")]))
     body = f'''{opening}
 <section class="section" style="padding-top:0"><div class="wrap cards cards-3">{cards}</div></section>{cta(path)}'''
-    return shell(path, "Case Studies | SapporoSys", "What changed for SapporoSys clients after the work shipped.", "work", body)
+    return shell(path, "Case Studies | SapporoSys", "What changed for SapporoSys clients after the work shipped.", "cases", body)
 
 def blog():
     path = "blog/index.html"

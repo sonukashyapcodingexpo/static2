@@ -16,6 +16,24 @@
     });
   }
 
+  function fitDrop(drop) {
+    var panel = drop.querySelector(".drop-panel");
+    if (!panel) return;
+    if (!window.matchMedia("(min-width: 1040px)").matches) {
+      panel.style.left = "";
+      panel.style.right = "";
+      return;
+    }
+    panel.style.left = "0";
+    panel.style.right = "auto";
+    var rect = panel.getBoundingClientRect();
+    if (rect.width < 40) return;
+    if (rect.right > window.innerWidth - 16) {
+      panel.style.left = "auto";
+      panel.style.right = "0";
+    }
+  }
+
   document.querySelectorAll(".drop > button").forEach(function (button) {
     button.addEventListener("click", function (event) {
       if (window.matchMedia("(min-width: 1040px)").matches) return;
@@ -24,6 +42,10 @@
       var open = drop.classList.toggle("is-open");
       button.setAttribute("aria-expanded", open ? "true" : "false");
     });
+  });
+  document.querySelectorAll(".drop").forEach(function (drop) {
+    drop.addEventListener("mouseenter", function () { fitDrop(drop); });
+    drop.addEventListener("focusin", function () { fitDrop(drop); });
   });
 
   document.querySelectorAll("[data-form]").forEach(function (form) {
@@ -61,6 +83,51 @@
       else seen.observe(el);
     });
   }
+
+  function paintCount(el, value) {
+    var pad = parseInt(el.getAttribute("data-pad") || "0", 10);
+    var text = String(Math.max(0, Math.round(value)));
+    while (pad > text.length) text = "0" + text;
+    el.textContent = text;
+  }
+
+  document.querySelectorAll("[data-count]").forEach(function (el) {
+    var target = parseFloat(el.getAttribute("data-count"));
+    if (!isFinite(target)) return;
+    if (reduce) {
+      paintCount(el, target);
+      return;
+    }
+    var played = false;
+    var play = function () {
+      if (played) return;
+      played = true;
+      var start = performance.now();
+      var duration = Math.min(1600, 900 + target * 6);
+      var tick = function () {
+        var t = Math.min(1, (performance.now() - start) / duration);
+        var eased = 1 - Math.pow(1 - t, 3);
+        paintCount(el, t < 1 ? target * eased : target);
+        if (t < 1) setTimeout(tick, 16);
+      };
+      paintCount(el, 0);
+      setTimeout(tick, 16);
+    };
+    if (!("IntersectionObserver" in window)) {
+      play();
+      return;
+    }
+    var watch = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        play();
+        watch.unobserve(el);
+      });
+    }, { threshold: 0.5 });
+    var rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.92 && rect.bottom > 0) play();
+    else watch.observe(el);
+  });
 
   document.querySelectorAll(".faq-item button").forEach(function (button) {
     button.addEventListener("click", function () {
