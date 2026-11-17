@@ -24,13 +24,15 @@
       panel.style.right = "";
       return;
     }
-    panel.style.left = "0";
+    panel.style.left = "0px";
     panel.style.right = "auto";
     var rect = panel.getBoundingClientRect();
     if (rect.width < 40) return;
-    if (rect.right > window.innerWidth - 16) {
-      panel.style.left = "auto";
-      panel.style.right = "0";
+    var limit = window.innerWidth - 16;
+    if (rect.right > limit) {
+      var next = rect.left - (rect.right - limit);
+      if (next < 16) next = 16;
+      panel.style.left = (next - rect.left) + "px";
     }
   }
 
@@ -49,8 +51,28 @@
   });
 
   document.querySelectorAll("[data-form]").forEach(function (form) {
+    var file = form.querySelector('input[type="file"]');
+    var nameEl = form.querySelector("[data-file-name]");
+    var emptyLabel = nameEl ? nameEl.textContent : "";
+    function checkFile() {
+      if (!file) return;
+      var picked = file.files && file.files[0];
+      if (!picked) {
+        file.setCustomValidity(file.required ? "Upload a PDF, DOC, or DOCX under 5 MB." : "");
+        if (nameEl) nameEl.textContent = emptyLabel;
+        return;
+      }
+      var okType = /\.(pdf|doc|docx)$/i.test(picked.name);
+      var okSize = picked.size <= 5 * 1024 * 1024;
+      if (!okType) file.setCustomValidity("Upload a PDF, DOC, or DOCX.");
+      else if (!okSize) file.setCustomValidity("CV must be 5 MB or smaller.");
+      else file.setCustomValidity("");
+      if (nameEl) nameEl.textContent = picked.name;
+    }
+    if (file) file.addEventListener("change", checkFile);
     form.addEventListener("submit", function (event) {
       event.preventDefault();
+      checkFile();
       if (!form.checkValidity()) {
         form.reportValidity();
         return;

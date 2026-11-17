@@ -107,7 +107,7 @@ AI = [
     ("A measured pilot", "A small release first, then a wider one if the numbers hold.", "chart", ["A pilot with a date", "A wider release only if it holds"]),
 ]
 
-def svc(slug, title, kicker, img, lead, challenge, points, group):
+def svc(slug, title, kicker, img, lead, challenge, points, group, outcomes=None):
     return {
         "path": slug + "/index.html",
         "nav": "services",
@@ -119,12 +119,29 @@ def svc(slug, title, kicker, img, lead, challenge, points, group):
         "lead": lead,
         "challenge": challenge,
         "points": points,
-        "outcomes": [
+        "outcomes": outcomes or [
             ("key", "Owned by you", "The code, the content, and the accounts sit with your company.", "Repositories, domains, and the tools your team logs into are transferred in the handover."),
             ("calendar", "Visible dates", "A plan you can put on a calendar, with the risks named.", "Each phase has a date, an owner, and the one risk most likely to move it."),
             ("phone", "Someone to call", "Support does not end on the day the system goes live.", "The first month has a named engineer who already knows the system."),
         ],
     }
+
+RCM = [
+    "medical-coding-billing",
+    "ar-calling",
+    "denial-management",
+    "payment-posting",
+    "eligibility-verification",
+    "charge-entry",
+]
+RCM_ICON = {
+    "medical-coding-billing": "pen",
+    "ar-calling": "phone",
+    "denial-management": "shield",
+    "payment-posting": "chart",
+    "eligibility-verification": "search",
+    "charge-entry": "layers",
+}
 
 SERVICES = [
     svc("software-development", "Software Development", "Custom engineering", "desk",
@@ -196,6 +213,90 @@ SERVICES = [
     svc("hospital-management-software", "Hospital Management Software", "Care operations", "clinic",
         "Software for appointments, wards, billing, and the handoff between departments.",
         "A hospital cannot pause while a system is redesigned. The daily board still has to be right.", INDUSTRY, "Industry"),
+    svc("medical-coding-billing", "Medical Coding and Billing", "Charts into claims", "clinic",
+        "ICD-10, CPT, and HCPCS coding from the signed chart, then a claim that is scrubbed before it goes to the payer.",
+        "A claim is only as clean as the note behind it. Guessing a code to clear the queue is how denials start.",
+        [
+            ("Specialty coding from the record", "Diagnosis, procedure, and modifier come from the documentation, and a query goes back when the note is not enough.", "pen", ["Queries when the chart is thin", "Modifiers that match the note"]),
+            ("Charge capture before the claim", "The encounter is complete before anyone releases it. Missing orders stay on hold.", "layers", ["Incomplete charts held", "The encounter still attached"]),
+            ("Claim scrub and payer edits", "Edits run while the visit is still easy to fix, and exceptions stay on a worklist with an owner.", "search", ["A named hold for each exception", "The claim released only when it clears"]),
+            ("A handoff the next desk can use", "Accepted claims move to posting and follow-up with the coding note still on them.", "route", ["A weekly sample re-coded", "The next desk does not start from zero"]),
+        ], "Revenue",
+        [
+            ("pen", "Charts that can be billed", "Incomplete notes are held. They are not guessed.", "A query goes back when the record cannot support a code."),
+            ("shield", "Fewer preventable denials", "Edits run before the payer sees the claim.", "Exceptions stay on a list with a name beside them."),
+            ("users", "A desk with an owner", "Coding is its own queue, not a leftover hour.", "You can see who coded the day and what is still waiting."),
+        ]),
+    svc("ar-calling", "AR Calling", "Follow-up on aged accounts", "phone",
+        "Payer and patient calls on aged accounts, with a note that says what was promised and when to call again.",
+        "An account without a next date is not being worked. It is waiting for someone to remember it.",
+        [
+            ("Aged accounts with a next date", "Balances are called in age order, and every call ends with a day to try again.", "phone", ["The promise is written down", "A date, not a vague follow-up"]),
+            ("Payer calls with the claim in hand", "The caller can see the codes, the denial, and what was already sent.", "search", ["The claim number on the note", "The missing document named"]),
+            ("Patient balances, plainly", "Statements and calls explain what insurance paid and what is still owed.", "users", ["A balance a patient can read", "A path to pay or to dispute"]),
+            ("A queue that does not go quiet", "The list shows who is next, including the calls that were awkward last time.", "clock", ["An owner for the day's list", "Silence older than the rule is visible"]),
+        ], "Revenue",
+        [
+            ("phone", "A note after every call", "The account carries what was said.", "The next person continues without asking the patient to start again."),
+            ("calendar", "Promises with dates", "A payer saying they will look at it is not a status.", "Each open balance has a next action and a day."),
+            ("chart", "The oldest money first", "Age is the order of the work.", "You can see which payers are holding the book."),
+        ]),
+    svc("denial-management", "Denial Management", "Appeals with the chart", "notes",
+        "Denied claims grouped by reason, appealed with the chart attached, and traced back to the code or the missing auth.",
+        "A denial that is only re-sent is the same claim, hoping for a different mood.",
+        [
+            ("Grouped by reason", "Denials are sorted by the cause, so the same mistake is fixed once.", "layers", ["A reason, not a pile", "The pattern is visible"]),
+            ("Appeals with the chart", "The appeal includes the note, the auth, and the claim.", "shield", ["The document the payer asked for", "A deadline on the appeal"]),
+            ("Back to the source", "A denial that keeps returning is traced to coding, eligibility, or a missing authorization.", "search", ["The desk that can stop the repeat", "The change written into the process"]),
+            ("A worklist with names", "Each denial has an owner and a due date. Nothing sits in a shared folder.", "users", ["Who has it today", "What is about to expire"]),
+        ], "Revenue",
+        [
+            ("shield", "Appeals that can be read", "The chart goes with the letter.", "A payer can decide without asking for the same document twice."),
+            ("search", "Repeats traced back", "The reason is recorded, not just the resubmission.", "The desk that caused it can see the pattern."),
+            ("calendar", "Deadlines kept", "An appeal past the window is a write-off.", "The list shows what expires this week."),
+        ]),
+    svc("payment-posting", "Payment Posting", "Money matched to the visit", "desk",
+        "ERA and paper EOB posting, with underpayments and patient payments kept apart from contractual write-offs.",
+        "A payment posted to the wrong visit makes the book look collected and the patient look overdue.",
+        [
+            ("ERA and paper, both", "Electronic remits and paper EOBs are posted to the visit they belong to.", "stack", ["The payment matches the claim", "Unmatched items stay visible"]),
+            ("Underpayments set aside", "A short pay is marked for appeal. It is not quietly written off.", "chart", ["Contractual write-offs named", "Short pays kept separate"]),
+            ("Patient money, separate", "Copays and patient payments are not mixed into the insurance line.", "box", ["Who paid is recorded", "The balance left is honest"]),
+            ("A day that closes", "Posting finishes against a batch, so tomorrow does not open on yesterday's pile.", "calendar", ["Batches with a total", "Exceptions listed before close"]),
+        ], "Revenue",
+        [
+            ("stack", "A payment on the right visit", "The remit and the claim are the same encounter.", "Unmatched money stays on a list until it is placed."),
+            ("chart", "Short pays kept visible", "Contractual adjustments and underpayments are different lines.", "The appeal desk receives the short pay, not a write-off."),
+            ("calendar", "A batch that closes", "The day's total is known before the next file arrives.", "Exceptions are named before anyone goes home."),
+        ]),
+    svc("eligibility-verification", "Eligibility Verification", "Coverage before the visit", "meet",
+        "Coverage, copay, deductible, and authorization checked before the patient is seen, and written where the coder can read it.",
+        "A claim denied for inactive coverage was knowable the day before the visit.",
+        [
+            ("Before the patient is seen", "Coverage is checked ahead of the visit, and the check is dated.", "search", ["Active coverage confirmed", "The date of the check on the chart"]),
+            ("Copay, deductible, and auth", "What the patient owes, and whether an authorization is required, is written for the front desk.", "shield", ["A number the desk can quote", "Auth requested when it is required"]),
+            ("A record the coder can use", "The plan name and the limitation stay on the encounter.", "pen", ["Plan name on the chart", "The limitation written down"]),
+            ("Exceptions before the day starts", "Inactive coverage and missing referrals are a morning list.", "clock", ["A list for the front desk", "Time to tell the patient"]),
+        ], "Revenue",
+        [
+            ("search", "Coverage checked in time", "The answer exists before the patient arrives.", "Inactive plans are a morning list, not a denial weeks later."),
+            ("shield", "Auth requested when it is required", "The rule is read before the service, not after.", "The coder can see what was confirmed."),
+            ("users", "The desk can quote the number", "Copay and deductible are written where staff stand.", "The patient hears the figure before the visit, not on a later statement."),
+        ]),
+    svc("charge-entry", "Charge Entry", "Superbills into charges", "laptop",
+        "Superbills and encounter forms turned into charges, with missing documentation held instead of guessed.",
+        "A missing charge is quieter than a denial, and it is how a day's work never becomes a claim.",
+        [
+            ("From the superbill, not from memory", "Encounter forms become charges with the provider and the date attached.", "pen", ["Every line traces to a form", "The provider is named"]),
+            ("Missing pieces are held", "A charge without a note or a diagnosis waits. It is not invented.", "shield", ["Holds with a reason", "The missing item is specific"]),
+            ("Duplicates caught early", "The same visit is not entered twice because two people had the form.", "layers", ["A match against the schedule", "Duplicates shown before they post"]),
+            ("Ready for coding", "A complete charge moves on with the chart. An incomplete one stays in this queue.", "route", ["Coding sees a full encounter", "The hold list is short enough to clear"]),
+        ], "Revenue",
+        [
+            ("pen", "A charge for every visit", "The schedule and the charge list can be compared.", "A day with no charge is visible, not assumed to be a no-show."),
+            ("shield", "Gaps held, not guessed", "Missing documentation stops the line.", "Coding receives encounters it can actually code."),
+            ("layers", "One visit, one entry", "Duplicates are caught against the schedule.", "The book does not bill the same encounter twice."),
+        ]),
     svc("hotel-management-software", "Hotel Management Software", "Rooms and guests", "city",
         "Front desk, housekeeping, and billing tools for properties that juggle rooms and walk-ins.",
         "When the desk and housekeeping keep different lists, a guest arrives to a room that is not ready.", INDUSTRY, "Industry"),
@@ -287,7 +388,7 @@ COMPANY = {
                          "This page is the studio diary: how we hire, how we review, and how a new person learns a client system.",
                          "Same standard on an internal tool and on a product a customer will pay for."),
     "industries": ("Industries", "Where the work lands", "city",
-                   "Healthcare, logistics, education, hospitality, retail, property, and software companies themselves.",
+                   "Healthcare, including coding, billing, and the desks around a claim, plus logistics, education, hospitality, retail, property, and software companies themselves.",
                    "We do not pretend every industry is the same. We do insist the first workshop is about their day, not our menu."),
 }
 
@@ -355,7 +456,7 @@ def drop(label, columns, end=False, on=False, extra=""):
             for text, desc, href in links
         )
         cols.append(f'<div class="drop-col"><p class="drop-kicker">{e(kicker)}</p>{items}</div>')
-    return f'<div class="{klass}"><button type="button" aria-expanded="false">{e(label)} <svg class="caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button><div class="drop-panel">{"".join(cols)}{extra}</div></div>'
+    return f'<div class="{klass}"><button type="button" aria-expanded="false">{e(label)} <svg class="caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button><div class="drop-panel"><div class="drop-cols">{"".join(cols)}</div>{extra}</div></div>'
 
 def nav(path, active):
     p = prefix(path)
@@ -371,6 +472,14 @@ def nav(path, active):
             ("ERP and CRM", "Operations software past the spreadsheet.", p + "erp-development/index.html"),
             ("Ecommerce", "Stores that can take a real order.", p + "ecommerce-development/index.html"),
             ("SEO and marketing", "Search and campaigns tied to enquiries.", p + "seo-services/index.html"),
+        ]),
+        ("Revenue", [
+            ("Coding and billing", "Charts turned into clean claims.", p + "medical-coding-billing/index.html"),
+            ("AR calling", "Follow-up on aged accounts.", p + "ar-calling/index.html"),
+            ("Denial management", "Appeals with the chart attached.", p + "denial-management/index.html"),
+            ("Payment posting", "Remits matched to the visit.", p + "payment-posting/index.html"),
+            ("Eligibility", "Coverage checked before the visit.", p + "eligibility-verification/index.html"),
+            ("Charge entry", "Superbills turned into charges.", p + "charge-entry/index.html"),
         ]),
     ]
     company = [
@@ -413,6 +522,7 @@ def footer(path):
     p = prefix(path)
     cols = [
         ("Practice", [("Software", "software-development/"), ("Mobile", "mobile-app-development/"), ("Web", "website-development/"), ("All services", "services/")]),
+        ("Revenue", [("Coding and billing", "medical-coding-billing/"), ("AR calling", "ar-calling/"), ("Denials", "denial-management/"), ("Payment posting", "payment-posting/"), ("Eligibility", "eligibility-verification/"), ("Charge entry", "charge-entry/")]),
         ("Company", [("About", "about-us/"), ("How we work", "our-process/"), ("Careers", "careers/"), ("Locations", "locations/")]),
         ("Visit", [("Portfolio", "portfolio/"), ("Case studies", "case-studies/"), ("FAQs", "faqs/"), ("Contact", "contact-us/")]),
     ]
@@ -436,15 +546,15 @@ def shell(path, title, desc, active, body):
 <link rel="icon" href="{e(asset(path, "assets/images/brand/favicon.png"))}" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{e(asset(path, "assets/css/site.css"))}?v=3">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Fraunces:opsz,wght@9..144,500;9..144,680&family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{e(asset(path, "assets/css/site.css"))}?v=14">
 </head>
 <body class="has-film">
 <a class="skip" href="#main">Skip to content</a>
 {header(path, active)}
 <main id="main">{body}</main>
 {footer(path)}
-<script src="{e(asset(path, "assets/js/site.js"))}?v=4"></script>
+<script src="{e(asset(path, "assets/js/site.js"))}?v=6"></script>
 </body>
 </html>
 '''
@@ -479,6 +589,7 @@ def form_block(intro):
 <option>Custom software</option>
 <option>Web or mobile product</option>
 <option>Operations system</option>
+<option>Medical coding and AR</option>
 <option>AI assistant</option>
 <option>Marketing site and SEO</option>
 <option>Something else</option>
@@ -516,6 +627,10 @@ def home():
     for i, (slug, ic) in enumerate(featured, 1):
         item = next(s for s in SERVICES if s["path"].startswith(slug + "/"))
         rows += card_block(item["title"], item["lead"], ic, kicker=item["kicker"], count=i, more=item["challenge"], href=p + item["path"])
+    rcm = ""
+    for i, slug in enumerate(RCM, 1):
+        item = next(s for s in SERVICES if s["path"].startswith(slug + "/"))
+        rcm += card_block(item["title"], item["lead"], RCM_ICON[slug], kicker=item["kicker"], count=i, href=p + item["path"])
     checks = "".join(f"<li>{CHECK}{e(t)}</li>" for t in ["Custom software and internal tools", "Web and mobile products", "A written plan before the build", "Support after the release"])
     steps = "".join(
         f'<div class="step"><b class="count" data-count="{n}" data-pad="2">{n:02d}</b><div><h3>{e(h)}</h3><p>{e(t)}</p></div></div>'
@@ -580,6 +695,10 @@ def home():
 <div class="section-head"><div><p class="kicker">Practice</p><h2>Where most briefs begin.</h2></div><p>Six starting points, with the problem each one is meant to take off a desk. The full list is grouped the way we staff the work.</p></div>
 <div class="cards cards-3">{rows}</div>
 </div></section>
+<section class="section" id="revenue-cycle" style="padding-top:0"><div class="wrap">
+<div class="section-head"><div><p class="kicker">Revenue cycle</p><h2>Medical coding, billing, and the desks around the claim.</h2></div><p>The claim is only the start. Calling, denials, posting, eligibility, and charge entry are separate queues, so unpaid work has a name and a person.</p></div>
+<div class="cards cards-3">{rcm}</div>
+</div></section>
 <section class="section" style="padding-top:0"><div class="wrap steps">
 <figure class="photo-frame"><video autoplay muted loop playsinline poster="{e(asset(path, "assets/media/meet.jpg"))}"><source src="{e(asset(path, "assets/media/studio.mp4"))}" type="video/mp4"></video></figure>
 <div>
@@ -613,26 +732,44 @@ def service_page(item):
     actions = f'<div class="actions"><a class="btn btn-saffron" href="{e(p + "request-a-quote/index.html")}">Request an estimate</a><a class="btn btn-ink" href="{e(p + "contact-us/index.html")}">Talk to the studio</a></div>'
     clip = "build" if item["path"].startswith("software-development/") else None
     opening = film(path, item["kicker"], e(item["title"]), item["lead"], actions, item["img"], clip, crumbs(path, [("Services", "services/index.html"), (item["title"], "")]))
+    slug = item["path"].split("/")[0]
+    if item["group"] == "Revenue":
+        receive = ("What this desk takes on", "The queue, named.", "The work is staffed as its own desk, with a written handoff to the next one.")
+        after = ("On the book", "What changes when the queue has an owner.", "These hold for a clinic group and for a billing company.")
+    else:
+        receive = ("What you receive", "Concrete, not a menu.", "Each engagement names the deliverables before the build starts.")
+        after = ("After the release", "What stays true on every engagement.", "These three hold whether the work is a first marketing site or a system that already has users.")
+    related = ""
+    if slug in RCM:
+        others = [s for s in RCM if s != slug]
+        start = RCM.index(slug)
+        picked = [others[(start + n) % len(others)] for n in range(3)]
+        rel_cards = ""
+        for rel in picked:
+            target = next(s for s in SERVICES if s["path"].startswith(rel + "/"))
+            rel_cards += card_block(target["title"], target["lead"], RCM_ICON[rel], kicker=target["kicker"], href=p + target["path"])
+        related = f'<section class="section" style="padding-top:0"><div class="wrap"><div class="section-head"><div><p class="kicker">The rest of the cycle</p><h2>Desks next to this one.</h2></div><p>A claim moves. These queues are staffed separately so nothing waits in a shared inbox.</p></div><div class="cards cards-3">{rel_cards}</div></div></section>'
     body = f'''
 {opening}
 <section class="band"><div class="wrap split"><div><p class="kicker">The problem</p><h2>Why this work usually stalls.</h2></div><p>{e(item["challenge"])}</p></div></section>
-<section class="section"><div class="wrap"><div class="section-head"><div><p class="kicker">What you receive</p><h2>Concrete, not a menu.</h2></div><p>Each engagement names the deliverables before the build starts.</p></div><div class="cards">{cards}</div></div></section>
-<section class="section" style="padding-top:0"><div class="wrap"><div class="section-head"><div><p class="kicker">After the release</p><h2>What stays true on every engagement.</h2></div><p>These three hold whether the work is a first marketing site or a system that already has users.</p></div><div class="cards cards-3">{outcomes}</div></div></section>
+<section class="section"><div class="wrap"><div class="section-head"><div><p class="kicker">{e(receive[0])}</p><h2>{e(receive[1])}</h2></div><p>{e(receive[2])}</p></div><div class="cards">{cards}</div></div></section>
+<section class="section" style="padding-top:0"><div class="wrap"><div class="section-head"><div><p class="kicker">{e(after[0])}</p><h2>{e(after[1])}</h2></div><p>{e(after[2])}</p></div><div class="cards cards-3">{outcomes}</div></div></section>
+{related}
 {cta(path)}'''
     return shell(path, item["title"] + " | SapporoSys", item["lead"], "services", body)
 
 def services_index():
     path = "services/index.html"
     groups = []
-    for name in ["Build", "Platforms", "Industry", "Intelligence", "Growth", "Places"]:
+    for name in ["Build", "Platforms", "Industry", "Revenue", "Intelligence", "Growth", "Places"]:
         items = [s for s in SERVICES if s["group"] == name]
-        group_icon = {"Build": "code", "Platforms": "layers", "Industry": "building", "Intelligence": "cpu", "Growth": "chart", "Places": "pin"}[name]
+        group_icon = {"Build": "code", "Platforms": "layers", "Industry": "building", "Revenue": "life", "Intelligence": "cpu", "Growth": "chart", "Places": "pin"}[name]
         cards = "".join(
             card_block(s["title"], s["lead"], group_icon, kicker=s["kicker"], more=s["challenge"], href=prefix(path) + s["path"])
             for s in items
         )
         groups.append(f'<div class="group"><h2>{e(name)}</h2><div class="mini-grid">{cards}</div></div>')
-    opening = film(path, "Practice", "Everything the studio takes on.", "Grouped the way we staff the work: build, platforms, industry systems, intelligence, growth, and the places we overlap hours with.", "", "screens", "studio", f'<p class="crumbs"><a href="{e(prefix(path) + "index.html")}">Home</a> / <span>Services</span></p>')
+    opening = film(path, "Practice", "Everything the studio takes on.", "Grouped the way we staff the work: build, platforms, industry systems, revenue-cycle desks, intelligence, growth, and the places we overlap hours with.", "", "screens", "studio", f'<p class="crumbs"><a href="{e(prefix(path) + "index.html")}">Home</a> / <span>Services</span></p>')
     body = f'''{opening}
 <section class="section" style="padding-top:0"><div class="wrap">{"".join(groups)}</div></section>{cta(path)}'''
     return shell(path, "Services | SapporoSys", "Software, platforms, industry systems, AI, and growth services from SapporoSys.", "services", body)
@@ -756,7 +893,7 @@ def careers():
     opening = film(path, "Hiring", "Open roles.", "We hire people who can explain a system to the person who will use it. The studio is in Bengaluru, with a few remote seats in India.", "", "team", None, crumbs(path, [("Careers", "")]))
     body = f'''{opening}
 <section class="section" style="padding-top:0"><div class="wrap roles">{roles}</div></section>
-<section class="section" id="apply" style="padding-top:0"><div class="wrap" style="display:grid;grid-template-columns:1fr;gap:1rem;max-width:760px"><h2>Apply</h2><div class="form-card"><form class="form" data-form><p class="form-ok">Application noted. If there is a fit, we will write back.</p><div class="fields"><label>Name <span class="req">*</span><input required name="name"></label><label>Email <span class="req">*</span><input required type="email" name="email"></label></div><label>Role <span class="req">*</span><select required name="role"><option value="">Choose a role</option>{"".join(f"<option>{e(t)}</option>" for t,_,_ in ROLES)}</select></label><label>Note <span class="req">*</span><textarea required name="note" placeholder="A few lines on work you have shipped."></textarea></label><button class="btn btn-saffron" type="submit">Send application</button></form></div></div></section>'''
+<section class="section" id="apply" style="padding-top:0"><div class="wrap" style="display:grid;grid-template-columns:1fr;gap:1rem;max-width:760px"><h2>Apply</h2><div class="form-card"><form class="form" data-form><p class="form-ok">Application noted. If there is a fit, we will write back.</p><div class="fields"><label>Name <span class="req">*</span><input required name="name"></label><label>Email <span class="req">*</span><input required type="email" name="email"></label></div><label>Role <span class="req">*</span><select required name="role"><option value="">Choose a role</option>{"".join(f"<option>{e(t)}</option>" for t,_,_ in ROLES)}</select></label><label>CV <span class="req">*</span><span class="file-pick"><input type="file" name="cv" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" required><span class="file-pick-btn">Choose file</span><span class="file-pick-name" data-file-name>PDF, DOC, or DOCX · 5 MB max</span></span></label><label>Note <span class="req">*</span><textarea required name="note" placeholder="A few lines on work you have shipped."></textarea></label><button class="btn btn-saffron" type="submit">Send application</button></form></div></div></section>'''
     return shell(path, "Careers | SapporoSys", "Open roles at the SapporoSys studio.", "company", body)
 
 def faqs():
