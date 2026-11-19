@@ -151,6 +151,50 @@
     else watch.observe(el);
   });
 
+  var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches && window.innerWidth >= 1040;
+  document.querySelectorAll("[data-hover-count]").forEach(function (el) {
+    var target = parseFloat(el.getAttribute("data-hover-count"));
+    var suffix = el.getAttribute("data-suffix") || "";
+    var stat = el.closest(".stat");
+    if (!isFinite(target) || !stat) return;
+    function paint(value) {
+      el.textContent = String(Math.max(0, Math.round(value))) + suffix;
+    }
+    if (reduce || !finePointer) {
+      paint(target);
+      return;
+    }
+    paint(0);
+    var played = false;
+    function play() {
+      if (played) return;
+      played = true;
+      var start = performance.now();
+      var duration = Math.max(650, Math.min(1100, 480 + target));
+      var tick = function () {
+        var t = Math.min(1, (performance.now() - start) / duration);
+        var eased = 1 - Math.pow(1 - t, 3);
+        paint(t < 1 ? target * eased : target);
+        if (t < 1) setTimeout(tick, 16);
+      };
+      tick();
+    }
+    stat.addEventListener("mouseenter", function () {
+      stat.classList.add("is-on");
+      play();
+    });
+    stat.addEventListener("mouseleave", function () {
+      stat.classList.remove("is-on");
+    });
+    stat.addEventListener("focus", function () {
+      stat.classList.add("is-on");
+      play();
+    });
+    stat.addEventListener("blur", function () {
+      stat.classList.remove("is-on");
+    });
+  });
+
   document.querySelectorAll(".faq-item button").forEach(function (button) {
     button.addEventListener("click", function () {
       var item = button.parentElement;

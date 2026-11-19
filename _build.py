@@ -547,14 +547,14 @@ def shell(path, title, desc, active, body):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Fraunces:opsz,wght@9..144,500;9..144,680&family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{e(asset(path, "assets/css/site.css"))}?v=14">
+<link rel="stylesheet" href="{e(asset(path, "assets/css/site.css"))}?v=19">
 </head>
 <body class="has-film">
 <a class="skip" href="#main">Skip to content</a>
 {header(path, active)}
 <main id="main">{body}</main>
 {footer(path)}
-<script src="{e(asset(path, "assets/js/site.js"))}?v=6"></script>
+<script src="{e(asset(path, "assets/js/site.js"))}?v=8"></script>
 </body>
 </html>
 '''
@@ -669,16 +669,16 @@ def home():
         f'<a class="btn btn-ink" href="{e(p + "services/index.html")}">See the practice</a></div>'
         f'<p class="fine"><a href="tel:+918041207788">+91 80 4120 7788</a> · <a href="mailto:hello@sapporosys.com">hello@sapporosys.com</a></p>'
     )
-    opening = film(path, "SapporoSys", "Software with a <em>clear</em> owner.",
-                   "We design custom systems, web and mobile products, and the support that keeps them useful after launch.",
+    opening = film(path, "SapporoSys", "Software your team can <em>run</em>.",
+                   "Custom systems, web and mobile products, and the people who stay after the release.",
                    actions, "code", "code")
     body = f'''
 {opening}
 <section class="stat-strip"><div class="wrap stats">
-<div class="stat"><b class="count" data-count="140">140</b><span>Products still in use</span></div>
-<div class="stat"><b class="count" data-count="11">11</b><span>Years of the practice</span></div>
-<div class="stat"><b class="count" data-count="64">64</b><span>Engineers and designers</span></div>
-<div class="stat"><b class="count" data-count="4">4</b><span>Hour-bands we cover</span></div>
+<div class="stat" tabindex="0"><b class="stat-figure" data-hover-count="1200" data-suffix="+">1200+</b><span>Projects<br>delivered</span></div>
+<div class="stat" tabindex="0"><b class="stat-figure" data-hover-count="700" data-suffix="+">700+</b><span>Global<br>clients</span></div>
+<div class="stat" tabindex="0"><b class="stat-figure" data-hover-count="6" data-suffix="+">6+</b><span>Years of<br>experience</span></div>
+<div class="stat" tabindex="0"><b class="stat-figure" data-hover-count="15" data-suffix="+">15+</b><span>Industries<br>served</span></div>
 </div></section>
 <div class="marquee" aria-hidden="true"><div class="marquee-track"><span>Healthcare</span><i>·</i><span>Logistics</span><i>·</i><span>Education</span><i>·</i><span>Hospitality</span><i>·</i><span>Retail</span><i>·</i><span>Property</span><i>·</i><span>Finance</span><i>·</i><span>Startups</span><i>·</i><span>Healthcare</span><i>·</i><span>Logistics</span><i>·</i><span>Education</span><i>·</i><span>Hospitality</span><i>·</i><span>Retail</span><i>·</i><span>Property</span><i>·</i><span>Finance</span><i>·</i><span>Startups</span><i>·</i></div></div>
 <section class="section"><div class="wrap split">
