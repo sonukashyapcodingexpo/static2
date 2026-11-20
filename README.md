@@ -1,6 +1,6 @@
-# SapporoSys
+# Saffron Infosystems
 
-Static marketing site for SapporoSys, a software studio.
+Static marketing site for Saffron Infosystems, a software studio.
 
 Open `index.html` in a browser, or serve this folder with any static server.
 

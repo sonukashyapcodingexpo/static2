@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Generate the SapporoSys static site."""
+"""Generate the Saffron Infosystems static site."""
 import html
 from pathlib import Path
 
@@ -17,8 +17,8 @@ def asset(path, rel):
     return prefix(path) + rel
 
 def logo_img(path):
-    src = asset(path, "assets/images/brand/logo.jpg")
-    return f'<img class="logo-img" src="{e(src)}" alt="SapporoSys Technologies">'
+    src = asset(path, "assets/images/brand/logo.jpg") + "?v=3"
+    return f'<img class="logo-img" src="{e(src)}" alt="Saffron Infosystems">'
 
 CHECK = '''<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>'''
 
@@ -145,7 +145,7 @@ RCM_ICON = {
 
 SERVICES = [
     svc("software-development", "Software Development", "Custom engineering", "desk",
-        "SapporoSys designs and builds software around a specific business, then stays close enough to support it.",
+        "Saffron Infosystems designs and builds software around a specific business, then stays close enough to support it.",
         "Generic tools bend the company around the product. We would rather shape the product around the work.", BUILD, "Build"),
     svc("website-development", "Website Development", "Sites that sell", "screens",
         "Marketing sites and content platforms that load quickly and stay easy for your team to update.",
@@ -340,7 +340,7 @@ SERVICES = [
         "Social programmes with a point of view, a cadence, and a path back to a conversation.",
         "Posting because the calendar is empty teaches an audience nothing about the work.", GROWTH, "Growth"),
     svc("software-development-company-usa", "Software Development Company in the USA", "United States", "city",
-        "SapporoSys works with US teams on custom software, with overlapping hours and a written handover.",
+        "Saffron Infosystems works with US teams on custom software, with overlapping hours and a written handover.",
         "Distance only hurts when decisions are verbal and the record lives in one time zone.", BUILD, "Places"),
     svc("software-development-company-uk", "Software Development Company in the UK", "United Kingdom", "office",
         "A UK-facing practice for product builds, portals, and the support that follows a release.",
@@ -357,8 +357,8 @@ SERVICES = [
 ]
 
 COMPANY = {
-    "about-us": ("About SapporoSys", "The studio", "team",
-                 "SapporoSys is a software studio. We design, build, and look after systems for companies that want the work explained in plain language.",
+    "about-us": ("About Saffron Infosystems", "The studio", "team",
+                 "Saffron Infosystems is a software studio. We design, build, and look after systems for companies that want the work explained in plain language.",
                  "The practice started with a simple complaint: too many projects were handed over as a folder of code and a farewell. We stay through the first real month of use."),
     "our-process": ("How We Work", "Four stages", "workshop",
                     "Every engagement moves through discovery, a written plan, a build you can see, and a launch that includes support.",
@@ -366,7 +366,7 @@ COMPANY = {
     "our-team": ("Our Team", "Who does the work", "collab",
                  "Producers, designers, and engineers who stay on the same engagement from the first workshop to the support window.",
                  "You will meet the people who write the system. The sales conversation is not a different company from the build."),
-    "why-choose-us": ("Why SapporoSys", "How we choose the work", "desk",
+    "why-choose-us": ("Why Saffron Infosystems", "How we choose the work", "desk",
                       "We take fewer projects so a senior person can still name the risks on yours.",
                       "The useful promise is not speed at any cost. It is a date, a scope, and a system your team can keep."),
     "partners-certifications": ("Partners and Practice", "How we work with others", "meet",
@@ -381,8 +381,8 @@ COMPANY = {
     "life-at-company": ("A Week at the Studio", "How the days go", "workshop",
                         "Mornings are for reviews and writing things down. Afternoons are for building. Fridays close with what shipped and what slipped.",
                         "The studio is quiet on purpose. The work is easier to see when the day has a shape."),
-    "life-at-company-name": ("The SapporoSys Name", "Why the mark looks like this", "notes",
-                             "The mark is a folded S. Sapporo is set in white and Sys in blue, with Technologies underneath, because the work is systems people have to run.",
+    "life-at-company-name": ("The Saffron Infosystems Name", "Why the mark looks like this", "notes",
+                             "The mark is a folded S. Saffron is set in white, with Infosystems underneath, because the work is systems people have to run.",
                              "The name is the practice, not a slogan. The same mark sits on estimates, release notes, and the project folder."),
     "life-at-luminate": ("Studio Life", "The room the work is made in", "team",
                          "This page is the studio diary: how we hire, how we review, and how a new person learns a client system.",
@@ -418,10 +418,10 @@ ROLES = [
 
 LEGAL = {
     "privacy-policy": ("Privacy Policy", [
-        "SapporoSys collects the details you type into a form: name, work email, company, and the description of a project. We use them to reply to that enquiry.",
+        "Saffron Infosystems collects the details you type into a form: name, work email, company, and the description of a project. We use them to reply to that enquiry.",
         "We do not sell enquiry data. We do not run third-party advertising pixels on this site.",
         "Messages are stored in the mailbox that receives them and kept only as long as the conversation, or a later project, needs them.",
-        "To ask for a copy or a deletion, write to hello@sapporosys.com. If we are mid-project, some records have to stay for the contract.",
+        "To ask for a copy or a deletion, write to hello@saffroninfosystems.com. If we are mid-project, some records have to stay for the contract.",
     ]),
     "terms-conditions": ("Terms and Conditions", [
         "This website describes services. It is not itself an offer to start work. Work begins when both sides accept a written scope.",
@@ -433,7 +433,7 @@ LEGAL = {
         "Discovery fees and paid workshops are for time already spent. They are not refunded once the session has happened.",
         "If a fixed-scope build stops before an agreed milestone, we bill the milestone in progress and return any amount paid ahead of work not started.",
         "Retainers for support are billed monthly. A month already begun is not refunded. You can stop the next month with the notice in the agreement.",
-        "Questions about a charge go to hello@sapporosys.com with the invoice number.",
+        "Questions about a charge go to hello@saffroninfosystems.com with the invoice number.",
     ]),
 }
 
@@ -445,7 +445,7 @@ BLOG = [
 
 
 def logo_link(path):
-    return f'<a class="logo" href="{e(prefix(path) + "index.html")}" aria-label="SapporoSys home">{logo_img(path)}</a>'
+    return f'<a class="logo" href="{e(prefix(path) + "index.html")}" aria-label="Saffron Infosystems home">{logo_img(path)}</a>'
 
 def drop(label, columns, end=False, on=False, extra=""):
     klass = "drop" + (" drop-end" if end else "") + (" is-on" if on else "")
@@ -490,7 +490,7 @@ def nav(path, active):
             ("Careers", "Open roles.", p + "careers/index.html"),
         ]),
         ("More", [
-            ("Why SapporoSys", "How we choose tools and dates.", p + "why-choose-us/index.html"),
+            ("Why Saffron Infosystems", "How we choose tools and dates.", p + "why-choose-us/index.html"),
             ("FAQs", "Before a project starts.", p + "faqs/index.html"),
             ("Locations", "Where the hours overlap.", p + "locations/index.html"),
             ("Industries", "The operations we know.", p + "industries/index.html"),
@@ -511,7 +511,7 @@ def nav(path, active):
 
 def header(path, active):
     p = prefix(path)
-    return f'''<div class="utility"><div class="wrap utility-row"><span class="utility-note">Software studio · Bengaluru, working across time zones</span><span class="utility-links"><a href="tel:+918041207788">+91 80 4120 7788</a><a href="mailto:hello@sapporosys.com">hello@sapporosys.com</a></span></div></div>
+    return f'''<div class="utility"><div class="wrap utility-row"><span class="utility-note">Software studio · Bengaluru, working across time zones</span><span class="utility-links"><a href="tel:+918041207788">+91 80 4120 7788</a><a href="mailto:hello@saffroninfosystems.com">hello@saffroninfosystems.com</a></span></div></div>
 <header class="site-header"><div class="wrap bar">{logo_link(path)}
 <nav class="nav" aria-label="Primary">{nav(path, active)}</nav>
 <a class="btn btn-saffron header-cta" href="{e(p + "request-a-quote/index.html")}">Start a brief</a>
@@ -530,8 +530,8 @@ def footer(path):
     for title, links in cols:
         items = "".join(f'<li><a href="{e(p + href + "index.html")}">{e(text)}</a></li>' for text, href in links)
         blocks.append(f'<div><h2>{e(title)}</h2><ul>{items}</ul></div>')
-    return f'''<footer class="site-footer"><div class="wrap"><div class="foot-grid"><div class="foot-brand">{logo_img(path)}<p>Custom software, mobile products, and the support that follows a release. SapporoSys, Bengaluru.</p><p><a href="tel:+918041207788">+91 80 4120 7788</a><br><a href="mailto:hello@sapporosys.com">hello@sapporosys.com</a></p></div>{"".join(blocks)}</div>
-<div class="foot-bottom"><div>© 2026 SapporoSys. All rights reserved.</div><div class="legal-links"><a href="{e(p + "refund-policy/index.html")}">Refunds</a><a href="{e(p + "privacy-policy/index.html")}">Privacy</a><a href="{e(p + "terms-conditions/index.html")}">Terms</a><a href="{e(p + "sitemap.html")}">Sitemap</a></div></div>
+    return f'''<footer class="site-footer"><div class="wrap"><div class="foot-grid"><div class="foot-brand">{logo_img(path)}<p>Custom software, mobile products, and the support that follows a release. Saffron Infosystems, Bengaluru.</p><p><a href="tel:+918041207788">+91 80 4120 7788</a><br><a href="mailto:hello@saffroninfosystems.com">hello@saffroninfosystems.com</a></p></div>{"".join(blocks)}</div>
+<div class="foot-bottom"><div>© 2026 Saffron Infosystems. All rights reserved.</div><div class="legal-links"><a href="{e(p + "refund-policy/index.html")}">Refunds</a><a href="{e(p + "privacy-policy/index.html")}">Privacy</a><a href="{e(p + "terms-conditions/index.html")}">Terms</a><a href="{e(p + "sitemap.html")}">Sitemap</a></div></div>
 <p class="media-note">Photographs and video are from Pexels and are free to use, including for commercial projects.</p></div></footer>'''
 
 def shell(path, title, desc, active, body):
@@ -543,7 +543,7 @@ def shell(path, title, desc, active, body):
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{e(title)}</title>
 <meta name="description" content="{e(desc)}">
-<link rel="icon" href="{e(asset(path, "assets/images/brand/favicon.png"))}" type="image/png">
+<link rel="icon" href="{e(asset(path, "assets/images/brand/favicon.png"))}?v=2" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Fraunces:opsz,wght@9..144,500;9..144,680&family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
@@ -667,9 +667,9 @@ def home():
     actions = (
         f'<div class="actions"><a class="btn btn-saffron" href="{e(p + "request-a-quote/index.html")}">Start a brief</a>'
         f'<a class="btn btn-ink" href="{e(p + "services/index.html")}">See the practice</a></div>'
-        f'<p class="fine"><a href="tel:+918041207788">+91 80 4120 7788</a> · <a href="mailto:hello@sapporosys.com">hello@sapporosys.com</a></p>'
+        f'<p class="fine"><a href="tel:+918041207788">+91 80 4120 7788</a> · <a href="mailto:hello@saffroninfosystems.com">hello@saffroninfosystems.com</a></p>'
     )
-    opening = film(path, "SapporoSys", "Software your team can <em>run</em>.",
+    opening = film(path, "Saffron Infosystems", "Software your team can <em>run</em>.",
                    "Custom systems, web and mobile products, and the people who stay after the release.",
                    actions, "code", "code")
     body = f'''
@@ -686,7 +686,7 @@ def home():
 <div>
 <p class="kicker">The studio</p>
 <h2>A build partner that does not disappear at launch.</h2>
-<p class="lede">SapporoSys is independent. We take a brief, write the plan, ship the system, and stay for the first weeks of real use.</p>
+<p class="lede">Saffron Infosystems is independent. We take a brief, write the plan, ship the system, and stay for the first weeks of real use.</p>
 <ul class="checks">{checks}</ul>
 <a class="link-more" href="{e(p + "about-us/index.html")}">About the studio</a>
 </div>
@@ -722,7 +722,7 @@ def home():
 </div>
 </div></section>
 {cta(path)}'''
-    return shell(path, "SapporoSys — Custom software, apps, and support", "SapporoSys designs custom software, web and mobile products, and supports them after launch.", "home", body)
+    return shell(path, "Saffron Infosystems — Custom software, apps, and support", "Saffron Infosystems designs custom software, web and mobile products, and supports them after launch.", "home", body)
 
 def service_page(item):
     path = item["path"]
@@ -756,7 +756,7 @@ def service_page(item):
 <section class="section" style="padding-top:0"><div class="wrap"><div class="section-head"><div><p class="kicker">{e(after[0])}</p><h2>{e(after[1])}</h2></div><p>{e(after[2])}</p></div><div class="cards cards-3">{outcomes}</div></div></section>
 {related}
 {cta(path)}'''
-    return shell(path, item["title"] + " | SapporoSys", item["lead"], "services", body)
+    return shell(path, item["title"] + " | Saffron Infosystems", item["lead"], "services", body)
 
 def services_index():
     path = "services/index.html"
@@ -772,7 +772,7 @@ def services_index():
     opening = film(path, "Practice", "Everything the studio takes on.", "Grouped the way we staff the work: build, platforms, industry systems, revenue-cycle desks, intelligence, growth, and the places we overlap hours with.", "", "screens", "studio", f'<p class="crumbs"><a href="{e(prefix(path) + "index.html")}">Home</a> / <span>Services</span></p>')
     body = f'''{opening}
 <section class="section" style="padding-top:0"><div class="wrap">{"".join(groups)}</div></section>{cta(path)}'''
-    return shell(path, "Services | SapporoSys", "Software, platforms, industry systems, AI, and growth services from SapporoSys.", "services", body)
+    return shell(path, "Services | Saffron Infosystems", "Software, platforms, industry systems, AI, and growth services from Saffron Infosystems.", "services", body)
 
 def story_page(slug, title, kicker, image, lead, more, active="company"):
     path = slug + "/index.html"
@@ -790,7 +790,7 @@ def story_page(slug, title, kicker, image, lead, more, active="company"):
     body = f'''{opening}
 <section class="band"><div class="wrap wrap-s"><p>{e(more)}</p></div></section>
 <section class="section"><div class="wrap cards cards-3">{cards}</div></section>{cta(path)}'''
-    return shell(path, title + " | SapporoSys", lead, active, body)
+    return shell(path, title + " | Saffron Infosystems", lead, active, body)
 
 def locations_index():
     path = "locations/index.html"
@@ -809,11 +809,11 @@ def locations_index():
     opening = film(path, "Hours", "Where the working day overlaps.", "The studio is in Bengaluru. Engagements are staffed so decisions are not stuck overnight.", "", "city", None, crumbs(path, [("Locations", "")]))
     body = f'''{opening}
 <section class="section" style="padding-top:0"><div class="wrap loc-grid">{cards}</div></section>{cta(path)}'''
-    return shell(path, "Locations | SapporoSys", "SapporoSys works from Bengaluru with overlap for the US, UK, UAE, Canada, and Australia.", "company", body)
+    return shell(path, "Locations | Saffron Infosystems", "Saffron Infosystems works from Bengaluru with overlap for the US, UK, UAE, Canada, and Australia.", "company", body)
 
 def location_page(slug, name, blurb, image):
     path = slug + "/index.html"
-    lead = f"SapporoSys staffs {name} engagements so reviews land inside {blurb.lower()}."
+    lead = f"Saffron Infosystems staffs {name} engagements so reviews land inside {blurb.lower()}."
     return story_page(slug, name, "Location", image, lead, blurb + ". Discovery notes are written the same day, so neither side waits on a memory.", "company")
 
 def portfolio():
@@ -833,7 +833,7 @@ def portfolio():
     opening = film(path, "Selected work", "Systems that stayed in use.", "A sample of products. Names of private clients are changed. The jobs are not.", "", "desk", "build", crumbs(path, [("Portfolio", "")]))
     body = f'''{opening}
 <section class="section" style="padding-top:0"><div class="wrap portfolio">{cards}</div></section>{cta(path)}'''
-    return shell(path, "Portfolio | SapporoSys", "Selected software products designed and supported by SapporoSys.", "portfolio", body)
+    return shell(path, "Portfolio | Saffron Infosystems", "Selected software products designed and supported by Saffron Infosystems.", "portfolio", body)
 
 def cases():
     path = "case-studies/index.html"
@@ -846,7 +846,7 @@ def cases():
     opening = film(path, "After launch", "What changed once staff used it.", "We write these after the support window, when the polite version of the demo has worn off.", "", "meet", None, crumbs(path, [("Case studies", "")]))
     body = f'''{opening}
 <section class="section" style="padding-top:0"><div class="wrap cards cards-3">{cards}</div></section>{cta(path)}'''
-    return shell(path, "Case Studies | SapporoSys", "What changed for SapporoSys clients after the work shipped.", "cases", body)
+    return shell(path, "Case Studies | Saffron Infosystems", "What changed for Saffron Infosystems clients after the work shipped.", "cases", body)
 
 def blog():
     path = "blog/index.html"
@@ -858,7 +858,7 @@ def blog():
     opening = film(path, "Studio notes", "Writing from the work.", "Short pieces on scope, handover, and the week after a release.", "", "notes", None, crumbs(path, [("Notes", "")]))
     body = f'''{opening}
 <section class="section" style="padding-top:0"><div class="wrap blog-grid">{"".join(cards)}</div></section>'''
-    return shell(path, "Notes | SapporoSys", "Notes from the SapporoSys studio on shipping and supporting software.", "work", body)
+    return shell(path, "Notes | Saffron Infosystems", "Notes from the Saffron Infosystems studio on shipping and supporting software.", "work", body)
 
 def article():
     path = "blog/articles/example-article/index.html"
@@ -873,19 +873,19 @@ def article():
 <p>The left-out list is part of the plan, not a private compromise. Clients relax when the missing pieces have a name and a sequence, instead of hovering as guilt.</p>
 <p>If you are staring at a brief that tries to include the whole company, start a conversation. We would rather propose a thinner first release than pretend the wide one will land on time.</p>
 </div></div></article>'''
-    return shell(path, "What a first release should leave out | SapporoSys", "How SapporoSys decides what a first software release should include.", "work", body)
+    return shell(path, "What a first release should leave out | Saffron Infosystems", "How Saffron Infosystems decides what a first software release should include.", "work", body)
 
 def contact():
     path = "contact-us/index.html"
-    opening = film(path, "Studio desk", "Write or call.", "Tell us the operation and the date that matters. A producer replies within one business day.", '<p class="fine"><a href="tel:+918041207788">+91 80 4120 7788</a> · <a href="mailto:hello@sapporosys.com">hello@sapporosys.com</a></p>', "office", "studio", crumbs(path, [("Contact", "")]))
+    opening = film(path, "Studio desk", "Write or call.", "Tell us the operation and the date that matters. A producer replies within one business day.", '<p class="fine"><a href="tel:+918041207788">+91 80 4120 7788</a> · <a href="mailto:hello@saffroninfosystems.com">hello@saffroninfosystems.com</a></p>', "office", "studio", crumbs(path, [("Contact", "")]))
     body = f'''{opening}<section class="section"><div class="wrap" style="max-width:760px"><div class="form-card">{form_block("Received. A producer will reply within one business day.")}</div></div></section>'''
-    return shell(path, "Contact | SapporoSys", "Contact the SapporoSys studio in Bengaluru.", "contact", body)
+    return shell(path, "Contact | Saffron Infosystems", "Contact the Saffron Infosystems studio in Bengaluru.", "contact", body)
 
 def quote():
     path = "request-a-quote/index.html"
     opening = film(path, "A brief", "Tell us enough to price the first step.", "If the work is still fuzzy, the first step is a paid discovery, not a fixed bid built on a guess.", "", "workshop", None, crumbs(path, [("Estimate", "")]))
     body = f'''{opening}<section class="section"><div class="wrap" style="max-width:760px"><div class="form-card">{form_block("Received. We will reply with the next step, which may be a few questions or a discovery outline.")}</div></div></section>'''
-    return shell(path, "Request an Estimate | SapporoSys", "Ask SapporoSys for an estimate or a discovery outline.", "contact", body)
+    return shell(path, "Request an Estimate | Saffron Infosystems", "Ask Saffron Infosystems for an estimate or a discovery outline.", "contact", body)
 
 def careers():
     path = "careers/index.html"
@@ -894,7 +894,7 @@ def careers():
     body = f'''{opening}
 <section class="section" style="padding-top:0"><div class="wrap roles">{roles}</div></section>
 <section class="section" id="apply" style="padding-top:0"><div class="wrap" style="display:grid;grid-template-columns:1fr;gap:1rem;max-width:760px"><h2>Apply</h2><div class="form-card"><form class="form" data-form><p class="form-ok">Application noted. If there is a fit, we will write back.</p><div class="fields"><label>Name <span class="req">*</span><input required name="name"></label><label>Email <span class="req">*</span><input required type="email" name="email"></label></div><label>Role <span class="req">*</span><select required name="role"><option value="">Choose a role</option>{"".join(f"<option>{e(t)}</option>" for t,_,_ in ROLES)}</select></label><label>CV <span class="req">*</span><span class="file-pick"><input type="file" name="cv" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" required><span class="file-pick-btn">Choose file</span><span class="file-pick-name" data-file-name>PDF, DOC, or DOCX · 5 MB max</span></span></label><label>Note <span class="req">*</span><textarea required name="note" placeholder="A few lines on work you have shipped."></textarea></label><button class="btn btn-saffron" type="submit">Send application</button></form></div></div></section>'''
-    return shell(path, "Careers | SapporoSys", "Open roles at the SapporoSys studio.", "company", body)
+    return shell(path, "Careers | Saffron Infosystems", "Open roles at the Saffron Infosystems studio.", "company", body)
 
 def faqs():
     path = "faqs/index.html"
@@ -902,20 +902,20 @@ def faqs():
     opening = film(path, "Before you brief us", "Straight answers.", "Ownership, timing, support, and where the studio actually sits.", "", "collab", None, crumbs(path, [("FAQs", "")]))
     body = f'''{opening}
 <section class="section" style="padding-top:0"><div class="wrap wrap-s"><div class="faq">{items}</div></div></section>'''
-    return shell(path, "FAQs | SapporoSys", "Common questions about working with SapporoSys.", "company", body)
+    return shell(path, "FAQs | Saffron Infosystems", "Common questions about working with Saffron Infosystems.", "company", body)
 
 def legal(slug):
     title, paras = LEGAL[slug]
     path = slug + "/index.html"
     prose = "".join(f"<p>{e(p)}</p>" for p in paras)
-    opening = film(path, "SapporoSys", e(title), "How we handle enquiries, fees, and the work once a scope is signed.", "", "notes", None, crumbs(path, [(title, "")]))
-    body = f'''{opening}<section class="section"><div class="wrap-s prose">{prose}<p>Questions: <a href="mailto:hello@sapporosys.com">hello@sapporosys.com</a>.</p></div></section>'''
-    return shell(path, title + " | SapporoSys", title + " for the SapporoSys website and engagements.", "company", body)
+    opening = film(path, "Saffron Infosystems", e(title), "How we handle enquiries, fees, and the work once a scope is signed.", "", "notes", None, crumbs(path, [(title, "")]))
+    body = f'''{opening}<section class="section"><div class="wrap-s prose">{prose}<p>Questions: <a href="mailto:hello@saffroninfosystems.com">hello@saffroninfosystems.com</a>.</p></div></section>'''
+    return shell(path, title + " | Saffron Infosystems", title + " for the Saffron Infosystems website and engagements.", "company", body)
 
 def not_found():
     path = "404.html"
     body = film(path, "404", "That page is not on this site.", "The link may be old. The services list and the studio desk are both still here.", '<div class="actions"><a class="btn btn-saffron" href="./index.html">Back home</a><a class="btn btn-ink" href="./contact-us/index.html">Contact</a></div>', "city")
-    return shell(path, "Page not found | SapporoSys", "This SapporoSys page does not exist.", "home", body)
+    return shell(path, "Page not found | Saffron Infosystems", "This Saffron Infosystems page does not exist.", "home", body)
 
 def design():
     path = "design-system.html"
@@ -931,15 +931,15 @@ def design():
 </div>
 <p class="lede" style="margin-top:1.5rem">Headlines are Syne. Body text is Manrope.</p>
 </div></section>'''
-    return shell(path, "Design System | SapporoSys", "Color, type, and controls for the SapporoSys site.", "company", body)
+    return shell(path, "Design System | Saffron Infosystems", "Color, type, and controls for the Saffron Infosystems site.", "company", body)
 
 def sitemap_page(paths):
     path = "sitemap.html"
     p = prefix(path)
     items = "".join(f'<li><a href="{e(p + item)}">{e(item)}</a></li>' for item in paths)
-    opening = film(path, "Index", "Sitemap", "Every public page on the SapporoSys site.", "", "server")
+    opening = film(path, "Index", "Sitemap", "Every public page on the Saffron Infosystems site.", "", "server")
     body = opening + f'<section class="section"><div class="wrap prose"><ul>{items}</ul></div></section>'
-    return shell(path, "Sitemap | SapporoSys", "Every page on the SapporoSys site.", "company", body)
+    return shell(path, "Sitemap | Saffron Infosystems", "Every page on the Saffron Infosystems site.", "company", body)
 
 def sitemap_xml(paths):
     urls = "\n".join(f"  <url><loc>https://www.saffronsys.com/{e(item if item != 'index.html' else '')}</loc></url>" for item in paths if item != "404.html")
@@ -976,7 +976,7 @@ def main():
     (ROOT / "sitemap.xml").write_text(sitemap_xml(sorted(pages)), encoding="utf-8")
     (ROOT / "robots.txt").write_text("User-agent: *\nAllow: /\nSitemap: https://www.saffronsys.com/sitemap.xml\n", encoding="utf-8")
     (ROOT / "README.md").write_text(
-        "# SapporoSys\n\nStatic marketing site for SapporoSys, a software studio.\n\nOpen `index.html` in a browser, or serve this folder with any static server.\n\nPhotography and video are from Pexels and free to use, including commercially.\n",
+        "# Saffron Infosystems\n\nStatic marketing site for Saffron Infosystems, a software studio.\n\nOpen `index.html` in a browser, or serve this folder with any static server.\n\nPhotography and video are from Pexels and free to use, including commercially.\n",
         encoding="utf-8",
     )
     print(f"wrote {len(pages)} html pages")
